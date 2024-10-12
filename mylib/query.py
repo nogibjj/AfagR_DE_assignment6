@@ -1,40 +1,43 @@
 """Query the database"""
 
-import sqlite3
+import os
+from databricks import sql
+from dotenv import load_dotenv
 
 
-def select():
-    conn = sqlite3.connect("cfb_playersDB.db")
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM cfb_playersDB limit 10")
-    print("We connected to cfb_playersDB table and fetched 10 rows:")
-    print(cursor.fetchall())
-    print("Done Select")
-    conn.close()
-    return "Reading Success"
+# Define a global variable for the log file
+LOG_FILE = "query_log.md"
+"""Query the database from a db connection to Azure Databricks"""
+import os
+from databricks import sql
+from dotenv import load_dotenv
 
 
-def update_query():
-    conn = sqlite3.connect("cfb_playersDB.db")
-    cursor = conn.cursor()
-    # update execution
-    cursor.execute("UPDATE cfb_playersDB SET ranking = 0.9080 WHERE id = 1 ")
-    conn.commit()
-    conn.close()
-    return "Update Success"
+# Define a global variable for the log file
+LOG_FILE = "query_log.md"
 
 
-def delete_query():
-    conn = sqlite3.connect("cfb_playersDB.db")
-    cursor = conn.cursor()
-    # delete execution
-    cursor.execute("DELETE FROM cfb_playersDB WHERE id = 10 ")
-    conn.commit()
-    conn.close()
-    return "Delete Success"
+def log_query(query, result="none"):
+    """adds to a query markdown file"""
+    with open(LOG_FILE, "a") as file:
+        file.write(f"```sql\n{query}\n```\n\n")
+        file.write(f"```response from databricks\n{result}\n```\n\n")
 
 
-if __name__ == "__main__":
-    select()
-    update_query()
-    delete_query()
+def general_query(query):
+    """runs a query a user inputs"""
+
+    load_dotenv()
+    server_h = os.getenv("SERVER_HOSTNAME")
+    access_token = os.getenv("ACCESS_TOKEN")
+    http_path = os.getenv("HTTP")
+    with sql.connect(
+        server_hostname=server_h,
+        http_path=http_path,
+        access_token=access_token,
+    ) as connection:
+        c = connection.cursor()
+        c.execute(query)
+        result = c.fetchall()
+    c.close()
+    log_query(f"{query}", result)

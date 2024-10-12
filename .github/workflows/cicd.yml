@@ -9,6 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env: 
+      SERVER_HOSTNAME: ${{secrets.SERVER_HOSTNAME}}
+      HTTP: ${{secrets.HTTP}}
+      ACCESS_TOKEN: ${{secrets.ACCESS_TOKEN}}
     steps:
       - uses: actions/checkout@v3
       - name: install packages
