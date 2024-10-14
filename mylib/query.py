@@ -1,13 +1,5 @@
-"""Query the database"""
-
-import os
-from databricks import sql
-from dotenv import load_dotenv
-
-
-# Define a global variable for the log file
-LOG_FILE = "query_log.md"
 """Query the database from a db connection to Azure Databricks"""
+
 import os
 from databricks import sql
 from dotenv import load_dotenv
