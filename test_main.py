@@ -3,7 +3,7 @@ from databricks import sql
 from dotenv import load_dotenv
 import os
 
-# import subprocess
+import subprocess
 
 
 def test_extract():
@@ -26,32 +26,32 @@ def test_load():
     assert result is not None
 
 
-# def test_query():
-#     """tests general_query"""
-#     result = subprocess.run(
-#         [
-#             "python",
-#             "main.py",
-#             "general_query",
-#             """
-#             select aa.state, sum(aa.total_population) state_population,
-#             sum(bb.violend) violence_arrest
-#             from `ids706_data_engineering`.`default`.`ar805_population_db` aa
-#             left join ids706_data_engineering.default.ar805_arrest_db bb
-#             on aa.country = bb.country
-#             group by aa.state
-#             having violence_arrest is not null
-#             order by violence_arrest desc;
-#             """,
-#         ],
-#         capture_output=True,
-#         text=True,
-#         check=True,
-#     )
-#     assert result.returncode == 0
+def test_query():
+    """tests general_query"""
+    result = subprocess.run(
+        [
+            "python",
+            "main.py",
+            "general_query",
+            """
+            select aa.state, sum(aa.total_population) state_population,
+            sum(bb.violent) violence_arrest
+            from `ids706_data_engineering`.`default`.`ar805_population_db` aa
+            left join ids706_data_engineering.default.ar805_arrest_db bb
+            on aa.county = bb.county
+            group by aa.state
+            having violence_arrest is not null
+            order by violence_arrest desc;
+            """,
+        ],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    assert result.returncode == 0
 
 
 if __name__ == "__main__":
     test_extract()
     test_load()
-    # test_query()
+    test_query()
