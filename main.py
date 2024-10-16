@@ -1,8 +1,8 @@
 import sys
 import argparse
 from mylib.extract import extract
-from mylib.transform_load import load
-from mylib.query import query
+from mylib.transform_load import load_csv_to_db
+from mylib.query import general_query
 
 
 def handle_arguments(args):
@@ -10,12 +10,12 @@ def handle_arguments(args):
     parser = argparse.ArgumentParser(description="ETL-Query script")
     parser.add_argument(
         "action",
-        choices=["extract", "load", "query"],
+        choices=["extract", "load_csv_to_db", "general_query"],
     )
     args = parser.parse_args(args[:1])
     print(args.action)
 
-    if args.action == "query":
+    if args.action == "general_query":
         parser.add_argument("query")
 
     # parse again with ever
@@ -29,11 +29,11 @@ def main():
     if args.action == "extract":
         print("Extracting data...")
         extract()
-    elif args.action == "load":
+    elif args.action == "load_csv_to_db":
         print("Transforming data...")
-        load()
-    elif args.action == "query":
-        query(args.query)
+        load_csv_to_db()
+    elif args.action == "general_query":
+        general_query(args.query)
 
     else:
         print(f"Unknown action: {args.action}")

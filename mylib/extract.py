@@ -20,13 +20,17 @@ def extract(
     with requests.get(url2) as r:
         with open(file_path2, "wb") as f:
             f.write(r.content)
-    df = pd.read_csv(file_path, index_col=0)
-    df = df[["COUNTY", "VIOLENT", "PROPERTY", "F_DRUGOFF", "F_SEXOFF"]]
+    df = pd.read_csv(file_path, index_col=0, skiprows=1)
+    df = df.iloc[:, :5]
     random.seed(123)
-    df_2 = pd.read_csv(file_path2, index_col=0)
-    df_2 = df_2[df_2["YEAR"] == "2005-2009"][["STATE", "COUNTY", "total_population"]]
+    df_2 = pd.read_csv(file_path2, index_col=0, skiprows=1)
+    df_2 = df_2[df_2.iloc[:, 0] == "2005-2009"].iloc[:, 1:]
     df_subset_2 = df_2.sample(600)
 
     df.to_csv(file_path, index=False)
     df_subset_2.to_csv(file_path2, index=False)
     return file_path, file_path2
+
+
+if __name__ == "__main__":
+    extract()

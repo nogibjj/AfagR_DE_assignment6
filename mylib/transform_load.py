@@ -4,8 +4,6 @@ Transforms and Loads data into Azure Databricks
 
 import os
 from databricks import sql
-import pandas as pd
-from dotenv import load_dotenv
 import csv
 
 
@@ -16,7 +14,6 @@ def load_csv_to_db(csv_file_path, conn, table_name, create_table_sql):
         with open(csv_file_path, mode="r", newline="", encoding="utf-8") as csvfile:
             csv_reader = csv.reader(csvfile)
             # Read the header row to get column names
-            header = next(csv_reader)
             # Execute the provided CREATE TABLE SQL statement if any
             cursor.execute(create_table_sql)
             # Truncate the destination table
@@ -27,8 +24,6 @@ def load_csv_to_db(csv_file_path, conn, table_name, create_table_sql):
             for row in csv_reader:
                 processed_row = ["Null" if value == "" else value for value in row]
                 rows.append(processed_row)
-            # Generate placeholders dynamically based on the header
-            placeholder_length = ", ".join(["?"] * len(header))
             # Prepare the full SQL statement with all values
             values_str = ", ".join(
                 [f"({', '.join([repr(v) for v in row])})" for row in rows]
@@ -54,8 +49,8 @@ http_path = os.getenv("HTTP")
 
 create_script_arrest = """
 CREATE TABLE IF NOT EXISTS ar805_arrest_DB (
-                    country string,
-                    violend int,
+                    county string,
+                    violent int,
                     property int,
                     f_drugoff int,
                     f_sexoff int
@@ -65,7 +60,7 @@ CREATE TABLE IF NOT EXISTS ar805_arrest_DB (
 create_script_population = """
 CREATE TABLE IF NOT EXISTS ar805_population_DB (
                     state string,
-                    country string,
+                    county string,
                     total_population int
                 )
 """
