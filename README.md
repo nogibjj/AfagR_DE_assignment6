@@ -83,4 +83,13 @@ The SQL query performs the following steps:
   
 The query helps normalize the number of violent arrests by considering the population size, making it easier to compare crime rates across counties.
 
+| state             | state_population    | violence_arrest             | violence_percent    |
+|-------------------|---------------------|-----------------------------|---------------------|
+| California        | 7789235             | 24426                       | 0.3                 |
+| New York          | 4851538             | 6145                        | 0.1                 |
+| Virginia          | 2056721             | 6145                        | 0.3                 |
+| Arizona           | 490463              | 753                         | 0.2                 |
+| Iowa              | 520111              | 503                         | 0.1                 |
+
+
 [query result here](query_log.md)
