@@ -5,18 +5,6 @@ from databricks import sql
 from dotenv import load_dotenv
 
 
-query = """
-           select aa.state, sum(aa.total_population) state_population,
-            sum(bb.violent) violence_arrest, 
-            round((violence_arrest/state_population)*100,1) as violence_percent
-            from `ids706_data_engineering`.`default`.`ar805_population_db` aa
-            left join ids706_data_engineering.default.ar805_arrest_db bb
-            on aa.county = bb.county
-            group by aa.state
-            having violence_arrest is not null
-            order by violence_arrest desc;
-            """
-
 # Define a global variable for the log file
 LOG_FILE = "query_log.md"
 
@@ -46,7 +34,3 @@ def general_query(query):
     c.close()
     log_query(f"{query}", result)
     return "query successfull"
-
-
-if __name__ == "__main__":
-    general_query(query)
