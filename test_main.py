@@ -2,7 +2,6 @@ from mylib.extract import extract
 from databricks import sql
 from dotenv import load_dotenv
 import os
-
 import subprocess
 
 
@@ -33,16 +32,7 @@ def test_query():
             "python",
             "main.py",
             "general_query",
-            """
-            select aa.state, sum(aa.total_population) state_population,
-            sum(bb.violent) violence_arrest
-            from `ids706_data_engineering`.`default`.`ar805_population_db` aa
-            left join ids706_data_engineering.default.ar805_arrest_db bb
-            on aa.county = bb.county
-            group by aa.state
-            having violence_arrest is not null
-            order by violence_arrest desc;
-            """,
+            "query",
         ],
         capture_output=True,
         text=True,
