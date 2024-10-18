@@ -64,7 +64,17 @@ The SQL query performs the following steps:
 
 3. **Filtering and Sorting**: The query filters out counties with null values for violent arrests and sorts the results by the number of violent arrests in descending order.
 
-
+```sql
+           select aa.state, sum(aa.total_population) state_population,
+            sum(bb.violent) violence_arrest, 
+            round((violence_arrest/state_population)*100,1) as violence_percent
+            from `ids706_data_engineering`.`default`.`ar805_population_db` aa
+            left join ids706_data_engineering.default.ar805_arrest_db bb
+            on aa.county = bb.county
+            group by aa.state
+            having violence_arrest is not null
+            order by violence_arrest desc;
+```
 
 ### Expected Results
 
