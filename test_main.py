@@ -25,14 +25,7 @@ def test_load():
     assert result is not None
 
 
-def test_query():
-    """tests general_query"""
-    result = subprocess.run(
-        [
-            "python",
-            "main.py",
-            "general_query",
-            """
+query = """
            select aa.state, sum(aa.total_population) state_population,
             sum(bb.violent) violence_arrest, 
             round((violence_arrest/state_population)*100,1) as violence_percent
@@ -42,8 +35,13 @@ def test_query():
             group by aa.state
             having violence_arrest is not null
             order by violence_arrest desc;
-            """,
-        ],
+            """
+
+
+def test_query():
+    """tests general_query"""
+    result = subprocess.run(
+        ["python", "main.py", "general_query", query],
         capture_output=True,
         text=True,
         check=True,
