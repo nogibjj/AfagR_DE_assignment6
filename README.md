@@ -73,4 +73,4 @@ The SQL query performs the following steps:
   
 The query helps normalize the number of violent arrests by considering the population size, making it easier to compare crime rates across counties.
 
-![query_result](query_log.md)
+[query result here](query_log.md)
